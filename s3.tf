@@ -1,34 +1,45 @@
+# s3.tf
+
 resource "aws_s3_bucket" "backups" {
-  bucket = "${var.project_name}-${var.environment}-backups-${random_id.bucket_suffix.hex}"
+  bucket = "my-backup-bucket"
+  tags = {
+    Name        = "backup-bucket"
+    Environment = "prod"
+  }
+}
+
+resource "aws_s3_bucket_acl" "backups_acl" {
+  bucket = aws_s3_bucket.backups.id
   acl    = "private"
+}
 
-  versioning {
-    enabled = true
-  }
+resource "aws_s3_bucket_lifecycle_configuration" "backups_lifecycle" {
+  bucket = aws_s3_bucket.backups.id
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  lifecycle_rule {
-    id      = "expire-old"
-    enabled = true
+  rule {
+    id     = "cleanup-old-backups"
+    status = "Enabled"
 
     expiration {
-      days = 90
-    }
-
-    noncurrent_version_expiration {
       days = 30
     }
   }
+}
 
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-backups"
-    Environment = var.environment
+resource "aws_s3_bucket_server_side_encryption_configuration" "backups_sse" {
+  bucket = aws_s3_bucket.backups.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "backups_versioning" {
+  bucket = aws_s3_bucket.backups.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
