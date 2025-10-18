@@ -1,7 +1,7 @@
 # s3.tf
 
 resource "aws_s3_bucket" "backups" {
-  bucket = "my-backup-bucket"
+  bucket = my-backup-bucket-${var.project_name}-${var.environment}-${random_id.suffix.hex}"
   tags = {
     Name        = "backup-bucket"
     Environment = "prod"
