@@ -1,4 +1,5 @@
 resource "aws_instance" "app" {
+  count                  = 1
   ami                    = ami-0360c520857e3138f
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public.id
