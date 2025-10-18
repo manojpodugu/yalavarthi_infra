@@ -8,11 +8,6 @@ resource "aws_s3_bucket" "backups" {
   }
 }
 
-resource "aws_s3_bucket_acl" "backups_acl" {
-  bucket = aws_s3_bucket.backups.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "backups_lifecycle" {
   bucket = aws_s3_bucket.backups.id
 
