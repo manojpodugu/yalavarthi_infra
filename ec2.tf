@@ -16,7 +16,7 @@ resource "aws_instance" "app" {
   }
 
   provisioner "local-exec" {
-    when    = "destroy"
+    when    = destroy
     command = "echo 'terraform destroy issued for instance ${self.id}'"
   }
 }
