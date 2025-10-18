@@ -20,7 +20,7 @@ provider "aws" {
 variable "aws_region" {
   description = "AWS region"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-east-1"
 }
 
 variable "project_name" {
@@ -38,13 +38,13 @@ variable "environment" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.micro"
+  default     = "t2.micro"
 }
 
 variable "key_name" {
   description = "EC2 key pair name for SSH (leave empty to skip)"
   type        = string
-  default     = ""
+  default     = "yalavarthi"
 }
 
 variable "admin_ip_cidr" {
